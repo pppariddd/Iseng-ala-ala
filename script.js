@@ -1,66 +1,72 @@
-const nameCard = document.getElementById('nameCard');
-const apologyCard = document.getElementById('apologyCard');
-const nicknameInput = document.getElementById('nickname');
-const submitName = document.getElementById('submitName');
-const apologyText = document.getElementById('apologyText');
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const popup = document.getElementById('popup');
-const heartsContainer = document.getElementById('hearts');
-const popupTitle = document.getElementById('popupTitle');
-const popupMsg = document.getElementById('popupMsg');
+// Elements
+const envelope = document.getElementById("envelope-container");
+const letter = document.getElementById("letter-container");
+const noBtn = document.querySelector(".no-btn");
+const yesBtn = document.querySelector(".btn[alt='Yes']");
 
-let noScale = 1.0;
-let yesScale = 1.0;
-let nickname = '';
+const title = document.getElementById("letter-title");
+const catImg = document.getElementById("letter-cat");
+const buttons = document.getElementById("letter-buttons");
+const finalText = document.getElementById("final-text");
 
-submitName.addEventListener('click', () => {
-  nickname = nicknameInput.value.trim();
-  if (!nickname) {
-	alert('Isi dulu nama panggilan kamu dong 😳');
-	return;
-  }
+// Click Envelope
 
-  nameCard.style.display = 'none';
-  apologyCard.style.display = 'block';
+envelope.addEventListener("click", () => {
+    envelope.style.display = "none";
+    letter.style.display = "flex";
 
-  const apologyTitle = apologyCard.querySelector('h1');
-  apologyTitle.textContent = `${nickname}, aku minta maaf 🥺💖`;
-
-  apologyText.innerHTML = `Aku gak bermaksud bikin kamu kesel.<br>Maafin aku, ya? 😢`;
+    setTimeout( () => {
+        document.querySelector(".letter-window").classList.add("open");
+    },50);
 });
 
-noBtn.addEventListener('click', () => {
-  noScale -= 0.1;
-  if (noScale < 0.3) noScale = 0.3;
-  yesScale += 0.1;
-  if (yesScale > 1.8) yesScale = 1.8;
-  noBtn.style.transform = `scale(${noScale})`;
-  yesBtn.style.transform = `scale(${yesScale})`;
+// Logic to move the NO btn
+
+noBtn.addEventListener("mouseover", () => {
+    const min = 200;
+    const max = 200;
+
+    const distance = Math.random() * (max - min) + min;
+    const angle = Math.random() * Math.PI * 2;
+
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    noBtn.style.transition = "transform 0.3s ease";
+    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
 });
 
-yesBtn.addEventListener('click', () => {
-  popup.classList.add('active');
-  popupTitle.textContent = `Makasih ya, ${nickname} 💕`;
-  popupMsg.textContent = `Aku janji bakal bikin kamu makin kesel lagi hehehe 🥺✨`;
-  generateHearts();
-  setTimeout(() => {
-	popup.classList.remove('active');
-	noScale = 1;
-	yesScale = 1;
-	noBtn.style.transform = `scale(1)`;
-	yesBtn.style.transform = `scale(1)`;
-  }, 5000);
-});
+// Logic to make YES btn to grow
 
-function generateHearts() {
-  for (let i = 0; i < 12; i++) {
-	const heart = document.createElement('div');
-	heart.className = 'heart';
-	heart.style.left = `${Math.random() * 100 - 50}px`;
-	heart.style.top = `${Math.random() * 40 - 20}px`;
-	heart.style.animationDelay = `${Math.random() * 0.3}s`;
-	heartsContainer.appendChild(heart);
-	setTimeout(() => heart.remove(), 2000);
-  }
-}
+// let yesScale = 1;
+
+// yesBtn.style.position = "relative"
+// yesBtn.style.transformOrigin = "center center";
+// yesBtn.style.transition = "transform 0.3s ease";
+
+// noBtn.addEventListener("click", () => {
+//     yesScale += 2;
+
+//     if (yesBtn.style.position !== "fixed") {
+//         yesBtn.style.position = "fixed";
+//         yesBtn.style.top = "50%";
+//         yesBtn.style.left = "50%";
+//         yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+//     }else{
+//         yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+//     }
+// });
+
+// YES is clicked
+
+yesBtn.addEventListener("click", () => {
+    title.textContent = "Yippeeee!";
+
+    catImg.src = "cat_dance.gif";
+
+    document.querySelector(".letter-window").classList.add("final");
+
+    buttons.style.display = "none";
+
+    finalText.style.display = "block";
+});
